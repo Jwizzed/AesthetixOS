@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const isDrawing = ref(false)
