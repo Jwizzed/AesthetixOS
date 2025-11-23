@@ -146,6 +146,7 @@ CELERY_TASK_SERIALIZER = 'json'
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'minioadmin')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', 'minioadmin')
 AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL', 'http://localhost:9000')
+AWS_S3_PUBLIC_ENDPOINT_URL = os.environ.get('AWS_S3_PUBLIC_ENDPOINT_URL', 'http://localhost:9000')
 AWS_S3_SIGNATURE_VERSION = 's3v4'
 AWS_S3_REGION_NAME = 'us-east-1'  # MinIO dummy region
 

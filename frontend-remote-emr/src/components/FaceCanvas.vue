@@ -78,6 +78,10 @@ const clearAll = () => {
     if (fileInput.value) fileInput.value.value = ''
 }
 
+defineExpose({
+    clearAll
+})
+
 const saveAnnotations = async () => {
     if (!props.patientId) {
         alert('No patient selected to save session for.')
@@ -93,6 +97,8 @@ const saveAnnotations = async () => {
             face_chart_data: strokes.value,
             doctor: 1 // Hardcoded Doctor ID for MVP
         }
+        
+        console.log('Saving session with payload:', payload)
 
         const sessionRes = await api.post('sessions/', payload)
         const sessionId = sessionRes.data.id
@@ -101,9 +107,10 @@ const saveAnnotations = async () => {
         // 2. If image exists, upload it
         if (uploadedImage.value) {
             const ext = uploadedImage.value.name.split('.').pop() || 'jpg'
+            const contentType = uploadedImage.value.type
             
             // Get Token
-            const tokenRes = await api.get(`upload-token/?ext=${ext}`)
+            const tokenRes = await api.get(`upload-token/?ext=${ext}&content_type=${encodeURIComponent(contentType)}`)
             const { upload_url, key } = tokenRes.data
             
             // Upload to S3 (Directly)

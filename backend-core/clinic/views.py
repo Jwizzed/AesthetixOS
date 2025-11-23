@@ -12,6 +12,26 @@ class TreatmentSessionViewSet(viewsets.ModelViewSet):
     queryset = TreatmentSession.objects.all()
     serializer_class = TreatmentSessionSerializer
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            print("TreatmentSession validation errors:", serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        # Automatically assign the first staff/user as doctor if not provided
+        # In a real app, this would be request.user
+        from django.contrib.auth.models import User
+        doctor = User.objects.first()
+        if not doctor:
+            # Fallback for dev env without users
+            doctor = User.objects.create_user('admin', 'admin@example.com', 'admin')
+            
+        serializer.save(doctor=doctor)
+
     def get_queryset(self):
         queryset = TreatmentSession.objects.all()
         patient_id = self.request.query_params.get('patient')
@@ -27,8 +47,9 @@ class UploadTokenView(views.APIView):
         service = MinIOService()
         # Optional: get extension from query param, default to jpg
         file_extension = request.query_params.get('ext', 'jpg')
+        content_type = request.query_params.get('content_type')
         
-        url, key = service.generate_presigned_url(file_extension=file_extension)
+        url, key = service.generate_presigned_url(file_extension=file_extension, content_type=content_type)
         
         if not url:
             return Response({"error": "Storage service unavailable"}, status=503)

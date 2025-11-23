@@ -12,14 +12,19 @@ class PDPAMaskingField(serializers.CharField):
         # value is the actual string from the DB (e.g., "0812345678")
         request = self.context.get('request')
         
-        # If no request context (e.g. shell), default to masked for safety
-        if not request or not hasattr(request.user, 'profile'):
+        # If no request context or user not authenticated, mask it
+        if not request or not request.user.is_authenticated:
             return self.mask_string(value)
             
-        user_role = request.user.profile.role
-        
-        if user_role in ['DOCTOR', 'ADMIN']:
-            return value
+        try:
+            # Check if profile exists safely
+            if hasattr(request.user, 'profile'):
+                user_role = request.user.profile.role
+                if user_role in ['DOCTOR', 'ADMIN']:
+                    return value
+        except Exception:
+            # Fallback if profile access fails
+            pass
         
         return self.mask_string(value)
 
@@ -32,4 +37,3 @@ class PDPAMaskingField(serializers.CharField):
         prefix = value[:3]
         suffix = value[-4:]
         return f"{prefix}-XXX-{suffix}"
-

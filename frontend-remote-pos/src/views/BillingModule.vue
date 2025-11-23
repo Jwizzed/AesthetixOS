@@ -152,11 +152,11 @@ const pollCommissionStatus = (trxId: string) => {
     <div class="lg:hidden fixed bottom-6 right-6 z-[60]">
         <button 
             @click="showMobileCart = !showMobileCart"
-            class="relative w-14 h-14 bg-slate-900 text-white rounded-full shadow-xl shadow-slate-900/30 flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
+            class="relative w-14 h-14 bg-white text-black rounded-full shadow-xl shadow-slate-900/10 flex items-center justify-center transition-transform hover:scale-105 active:scale-95 border border-slate-200"
         >
             <svg v-if="!showMobileCart" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
              <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            <span v-if="cart.length > 0" class="absolute -top-1 -right-1 w-5 h-5 bg-brand-500 rounded-full text-xs font-bold flex items-center justify-center border-2 border-white">{{ cart.length }}</span>
+            <span v-if="cart.length > 0" class="absolute -top-1 -right-1 w-5 h-5 bg-brand-500 text-white rounded-full text-xs font-bold flex items-center justify-center border-2 border-white">{{ cart.length }}</span>
         </button>
     </div>
 
@@ -236,7 +236,7 @@ const pollCommissionStatus = (trxId: string) => {
             <button 
                 @click="checkout"
                 :disabled="isProcessing || cart.length === 0"
-                class="w-full py-4 bg-slate-900 text-white rounded-xl font-bold text-lg hover:bg-brand-600 disabled:opacity-50 disabled:hover:bg-slate-900 transition-all duration-300 shadow-lg shadow-slate-900/20 active:scale-[0.98] flex items-center justify-center gap-3"
+                class="w-full py-4 bg-orange-500 text-black rounded-xl font-bold text-lg hover:bg-orange-600 disabled:opacity-50 disabled:hover:bg-orange-500 transition-all duration-300 shadow-lg shadow-orange-500/20 active:scale-[0.98] flex items-center justify-center gap-3"
             >
                 <span v-if="isProcessing" class="animate-spin">⏳</span>
                 {{ isProcessing ? 'Processing...' : 'Pay Now' }}

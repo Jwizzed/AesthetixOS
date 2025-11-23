@@ -26,5 +26,15 @@ export default {
       }
     },
   },
+  safelist: [
+    {
+      pattern: /bg-brand-(500|600|700)/,
+      variants: ['hover', 'focus'],
+    },
+    {
+        pattern: /text-brand-(500|600|700)/,
+        variants: ['hover', 'focus'],
+    }
+  ],
   plugins: [],
 }

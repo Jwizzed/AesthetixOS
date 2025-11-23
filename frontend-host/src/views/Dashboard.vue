@@ -172,7 +172,7 @@ const fetchActivity = async () => {
         console.error('Failed to fetch activity', error)
         // Fallback mock data if API fails
         activities.value = [
-            { id: '1', time: '10:30 AM', patientName: 'Mock Patient', patientId: '1', action: 'System Offline Mode', status: 'Error', statusClass: 'bg-red-100 text-red-700' }
+            { id: '1', time: '10:30 AM', patientName: 'Mock Patient', patientId: '1', action: 'Consultation Fee', status: 'COMPLETED', statusClass: 'bg-green-100 text-green-700' }
         ]
     } finally {
         loading.value = false

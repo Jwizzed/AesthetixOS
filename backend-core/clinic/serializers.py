@@ -29,3 +29,5 @@ class TreatmentSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TreatmentSession
         fields = '__all__'
+        read_only_fields = ('doctor',)
+

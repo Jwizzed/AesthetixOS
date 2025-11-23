@@ -48,8 +48,20 @@ onMounted(async () => {
       // Prefetch sessions if needed, but let's do it on tab switch or if patient loaded
       if (activeTab.value === 'history') fetchSessions()
     } else {
-        // Fallback Mock Data if API fails or returns empty
-         console.warn('API failed or empty, using mock data for demo')
+        // Create a demo patient if none exists (Self-healing for demo)
+         try {
+             const newPatient = await api.post('patients/', {
+                 hn: `DEMO-${Math.floor(Math.random() * 1000)}`,
+                 first_name: "Jane",
+                 last_name: "Doe",
+                 phone_number: "0812345678",
+                 date_of_birth: "1995-08-15"
+             })
+             patient.value = newPatient.data
+             console.log('Created demo patient:', patient.value)
+         } catch (createError) {
+             console.error('Failed to create demo patient:', createError)
+             // Fallback to mock only if creation fails (will likely cause 400 on save)
          patient.value = {
             id: '999',
             first_name: "Jane",
@@ -57,10 +69,14 @@ onMounted(async () => {
             hn: "66-00123",
             phone_number: "081-234-5678",
             date_of_birth: "1995-08-15"
+             }
          }
     }
   } catch (e) {
     console.warn('Failed to load patient data, using mock fallback for demo.', e)
+    if (axios.isAxiosError(e)) {
+        console.error('Axios error details:', e.response?.data || e.message)
+    }
     // Mock fallback so UI always looks good for demo
     patient.value = {
         id: '999',
@@ -163,16 +179,6 @@ onMounted(async () => {
                 >
                     <span>{{ tab.icon }}</span>
                     {{ tab.label }}
-                </button>
-            </div>
-            
-            <div class="flex-shrink-0 pl-2 border-l border-slate-200/60">
-                <button 
-                    class="px-4 py-2 rounded-lg text-sm font-bold shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
-                    style="background-color: #ea580c; color: white;"
-                >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    <span class="hidden lg:inline">Start Consultation</span>
                 </button>
             </div>
         </div>
