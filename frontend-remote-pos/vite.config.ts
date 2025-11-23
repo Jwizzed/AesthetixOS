@@ -19,6 +19,13 @@ export default defineConfig({
   },
   server: {
     port: 3002,
+    origin: 'http://localhost:3002',
     cors: true
-  }
+  },
+  preview: {
+    port: 3002,
+    strictPort: true,
+    cors: true
+  },
+  base: 'http://localhost:3002/'
 })

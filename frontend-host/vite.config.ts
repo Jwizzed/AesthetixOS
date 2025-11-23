@@ -11,8 +11,8 @@ export default defineConfig({
       remotes: {
         // In dev, these run on different ports.
         // In prod, these would be full URLs to built assets.
-        emr: 'http://localhost:3001/remoteEntry.js',
-        pos: 'http://localhost:3002/remoteEntry.js',
+        emr: 'http://localhost:3001/assets/remoteEntry.js',
+        pos: 'http://localhost:3002/assets/remoteEntry.js',
       },
       shared: ['vue', 'pinia', 'vue-router']
     })
