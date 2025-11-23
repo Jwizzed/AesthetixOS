@@ -12,6 +12,13 @@ class TreatmentSessionViewSet(viewsets.ModelViewSet):
     queryset = TreatmentSession.objects.all()
     serializer_class = TreatmentSessionSerializer
 
+    def get_queryset(self):
+        queryset = TreatmentSession.objects.all()
+        patient_id = self.request.query_params.get('patient')
+        if patient_id:
+            queryset = queryset.filter(patient_id=patient_id)
+        return queryset
+
 class UploadTokenView(views.APIView):
     """
     Generates a presigned URL for direct-to-MinIO uploads.
