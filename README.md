@@ -1,3 +1,109 @@
+# Product Preview
+
+## Dashboard Page
+
+![Dashboard](IMAGES/SCR-20251123-ogsq.png)
+
+The **Dashboard** serves as the central command center for clinic administrators and physicians. It provides at-a-glance insights into daily operations and key performance metrics:
+
+- **Personalized Greeting**: Welcomes the user with real-time appointment information
+- **Key Metrics Display**:
+  - **Total Revenue** with percentage change indicators
+  - **Appointments** count with growth trends
+  - **New Patients** tracking with change indicators
+  - **Inventory Alerts** for low-stock items requiring attention
+- **Module Access**: Quick launch cards for both main modules:
+  - **Medical Records**: Access patient histories, face charts, and diagnosis tools
+  - **Point of Sale**: Process payments, track commissions, and manage inventory
+- **Recent Transactions**: Real-time feed of the latest clinic activities
+- **Navigation**: Clean sidebar with role-based menu items (Clinical vs. Finance sections)
+
+## Medical Record Page
+
+### Overview
+
+![Medical Record Overview](IMAGES/SCR-20251123-oklm.png)
+
+The **Overview** tab consolidates critical patient information in a single, comprehensive view:
+
+- **Patient Demographics**: Age, Gender, with **PDPA-compliant** phone masking based on user role permissions
+- **Allergy Warnings**: Prominent alert banner displaying critical allergies for patient safety
+- **Latest Vitals**: Real-time monitoring of patient health indicators including pulse, blood pressure, and temperature
+- **Upcoming Appointments**: Scheduled treatments with dates and procedure types
+- **Treatment Plan**: Ongoing therapy schedules with frequency and repeat intervals
+- **Tab Navigation**: Quick access to Overview, Face Chart, History, and Doctor Notes
+
+### Face Chart
+
+![Face Charting Canvas](IMAGES/SCR-20251123-okjd.png)
+
+The **Face Charting Canvas** is the flagship feature for precise treatment documentation:
+
+- **HTML5 Canvas Drawing Tool**: Allows physicians to draw annotations directly on high-resolution patient photos
+- **Annotation Features**:
+  - Mark injection points for fillers and Botox
+  - Outline treatment areas on the face
+  - Visual documentation of treatment plans
+- **Direct Upload Integration**: Uses **MinIO Presigned URLs** for zero-latency image uploads, bypassing the application server
+- **Session Management**:
+  - Upload new patient images
+  - Reset annotations as needed
+  - Persist annotations as JSON coordinates linked to the treatment session
+- **Use Case**: Critical for aesthetic procedures where precise location documentation is required for before/after comparisons and treatment tracking
+
+### History
+
+![Treatment History](IMAGES/SCR-20251123-okkq.png)
+
+The **History** tab provides a chronological timeline of all patient treatment sessions:
+
+- **Session Timeline**: Auto-generated records from Face Canvas saves with date stamps
+- **Timestamp Tracking**: Precise time stamps for each session
+- **Image Attachments**: Visual indicators showing which sessions include face chart photos
+- **Source Attribution**: Each entry notes it was auto-generated from Face Canvas
+- **Audit Trail**: Complete historical record for compliance, insurance claims, and treatment outcome analysis
+- **Purpose**: Enables doctors to track treatment progression over time and demonstrate patient journey
+
+## Point of Sale Page
+
+### Smart Course Grid
+
+![Point of Sale Interface](IMAGES/SCR-20251123-pdad.png)
+
+The **Smart Course Grid** is the centerpiece of the Point of Sale module, designed for rapid checkout and intuitive product selection:
+
+- **Categorized Inventory**: Tabbed interface organizing products into Treatments, Medications, and Retail Products with quick filtering
+- **Product Cards**: Clean grid layout with category badges distinguishing between drugs and services
+- **Pricing Display**: All prices shown in local currency with instant add-to-cart functionality via quick-add buttons
+- **Real-time Cart**: Bottom panel tracking selected items with:
+  - Abbreviated item codes for space efficiency
+  - Unit prices and quantity multipliers
+  - Remove functionality for cart adjustments
+  - Live subtotal calculation
+  - Automatic VAT computation with breakdown display
+  - Prominent total amount in bold typography
+- **One-Click Checkout**: Large action button for seamless transaction completion
+- **Transaction Context**: Active transaction identifier displayed for audit trail linkage
+- **Use Case**: Optimized for high-volume cashier operations requiring speed and accuracy across multi-item sales while maintaining real-time inventory synchronization
+
+### Checkout Summary
+
+![Checkout Summary](IMAGES/SCR-20251123-pcyn.png)
+
+The **Checkout Summary** provides a streamlined final review before payment processing:
+
+- **Itemized Breakdown**: Clean list of selected products with abbreviated codes for rapid scanning
+- **Product Details**: Full specifications with individual unit prices and quantity multipliers
+- **Last-Minute Adjustments**: Remove options available for each line item before finalizing
+- **Financial Summary**:
+  - Subtotal calculation from all line items
+  - VAT breakdown with exact tax amount displayed separately
+  - Bold total amount in prominent orange typography for clear visual hierarchy
+- **Single Action Flow**: Large payment button positioned for easy access and quick processing
+- **Minimal Interface**: Focused design eliminating navigation elements to prevent transaction interruption
+- **Use Case**: Ensures transaction accuracy and provides transparent pricing breakdown for customer review before payment commitment, reducing disputes and chargebacks
+
+
 # Project Specification: AesthetixOS
 ### Modular Clinic Resource Planning (ERP) System
 
