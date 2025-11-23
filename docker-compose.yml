@@ -33,7 +33,7 @@ services:
     build: 
       context: ./backend-core
       dockerfile: Dockerfile
-    command: python manage.py runserver 0.0.0.0:8000
+    command: sh -c "uv run python manage.py migrate && uv run python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./backend-core:/app
     ports:
@@ -59,7 +59,7 @@ services:
     build: 
       context: ./backend-core
       dockerfile: Dockerfile
-    command: celery -A core worker -l info
+    command: sh -c "uv run celery -A core worker -l info"
     volumes:
       - ./backend-core:/app
     depends_on:
@@ -78,30 +78,19 @@ services:
       - AWS_SECRET_ACCESS_KEY=minioadmin
 
   # --- Frontend Layer ---
-  # Note: In development, we usually run these locally with 'pnpm dev' for HMR.
-  # But adding them here for full stack orchestration if needed.
-  host:
-    build: ./frontend-host
-    ports: ["3000:3000"]
-    volumes:
-      - ./frontend-host:/app
-      - /app/node_modules
-
-  remote-emr:
-    build: ./frontend-remote-emr
-    ports: ["3001:3001"]
-    volumes:
-      - ./frontend-remote-emr:/app
-      - /app/node_modules
-
-  remote-pos:
-    build: ./frontend-remote-pos
-    ports: ["3002:3002"]
-    volumes:
-      - ./frontend-remote-pos:/app
-      - /app/node_modules
+  # DISABLED: Running locally via 'pnpm dev' for better HMR
+  # host:
+  #   build: ./frontend-host
+  #   ports: ["3000:3000"]
+  
+  # remote-emr:
+  #   build: ./frontend-remote-emr
+  #   ports: ["3001:3001"]
+  
+  # remote-pos:
+  #   build: ./frontend-remote-pos
+  #   ports: ["3002:3002"]
 
 volumes:
   pgdata:
   minio_data:
-
