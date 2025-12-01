@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useUIStore } from '../stores/useUIStore'
+import { storeToRefs } from 'pinia'
 
-const isSidebarOpen = ref(false)
+const uiStore = useUIStore()
+const { isSidebarOpen } = storeToRefs(uiStore)
 </script>
 
 <template>
@@ -10,7 +12,7 @@ const isSidebarOpen = ref(false)
     <!-- Mobile Sidebar Overlay -->
     <div 
         v-if="isSidebarOpen" 
-        @click="isSidebarOpen = false"
+        @click="uiStore.closeSidebar()"
         class="fixed inset-0 bg-slate-900/50 z-40 lg:hidden backdrop-blur-sm transition-opacity"
     ></div>
 
@@ -33,7 +35,7 @@ const isSidebarOpen = ref(false)
           </div>
         </div>
         <!-- Mobile Close Button -->
-        <button @click="isSidebarOpen = false" class="lg:hidden text-slate-400 hover:text-slate-600">
+        <button @click="uiStore.closeSidebar()" class="lg:hidden text-slate-400 hover:text-slate-600">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
       </div>
@@ -45,7 +47,7 @@ const isSidebarOpen = ref(false)
           <div class="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Main Menu</div>
           
           <RouterLink to="/" 
-            @click="isSidebarOpen = false"
+            @click="uiStore.closeSidebar()"
             class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 group relative overflow-hidden"
             active-class="bg-brand-50 text-brand-600 shadow-sm"
             :class="[
@@ -65,7 +67,7 @@ const isSidebarOpen = ref(false)
            <div class="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Clinical</div>
            
            <RouterLink to="/emr" 
-            @click="isSidebarOpen = false"
+            @click="uiStore.closeSidebar()"
             class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 group relative overflow-hidden"
             active-class="bg-brand-50 text-brand-600 shadow-sm"
             :class="[
@@ -84,7 +86,7 @@ const isSidebarOpen = ref(false)
            <div class="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Finance</div>
            
            <RouterLink to="/pos" 
-            @click="isSidebarOpen = false"
+            @click="uiStore.closeSidebar()"
             class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 group relative overflow-hidden"
             active-class="bg-brand-50 text-brand-600 shadow-sm"
             :class="[
@@ -119,7 +121,7 @@ const isSidebarOpen = ref(false)
             <!-- Left: Hamburger + Breadcrumbs -->
             <div class="flex items-center gap-4 lg:gap-6 flex-1">
                 <!-- Hamburger -->
-                <button @click="isSidebarOpen = true" class="lg:hidden p-2 -ml-2 text-slate-500 hover:bg-slate-100 rounded-lg">
+                <button @click="uiStore.openSidebar()" class="lg:hidden p-2 -ml-2 text-slate-500 hover:bg-slate-100 rounded-lg">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
 

@@ -2,7 +2,7 @@
     <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
         <div class="p-6 border-b border-slate-50 flex justify-between items-center">
             <h3 class="font-bold text-slate-800 text-lg">Recent Transactions</h3>
-            <button @click="fetchActivity" class="text-sm text-brand-600 font-medium hover:text-brand-700 flex items-center gap-1">
+            <button @click="store.fetchActivities()" class="text-sm text-brand-600 font-medium hover:text-brand-700 flex items-center gap-1">
                 <span v-if="loading" class="animate-spin">↻</span>
                 Refresh
             </button>
@@ -43,58 +43,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import api from '../../api'
+import { onMounted } from 'vue'
+import { useActivityStore } from '../../stores/useActivityStore'
+import { storeToRefs } from 'pinia'
 
-interface Activity {
-    id: string
-    time: string
-    patientName: string
-    patientId: string
-    action: string
-    status: string
-    statusClass: string
-}
-
-const activities = ref<Activity[]>([])
-const loading = ref(false)
-
-const fetchActivity = async () => {
-    loading.value = true
-    try {
-        // 1. Fetch Transactions (Commerce)
-        const trxRes = await api.get('commerce/transactions/')
-        // 2. Fetch Patients (Clinic)
-        const patRes = await api.get('clinic/patients/')
-        
-        const patientsMap = new Map(patRes.data.map((p: any) => [p.id, `${p.first_name} ${p.last_name}`]))
-
-        // Map transactions to activity format
-        const transactionActivities = trxRes.data.map((t: any) => ({
-            id: t.id,
-            time: new Date(t.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            patientId: t.patient,
-            patientName: patientsMap.get(t.patient) || 'Unknown Patient',
-            action: `Payment: ฿${Number(t.total_amount).toLocaleString()}`,
-            status: t.status,
-            statusClass: t.status === 'COMPLETED' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
-        }))
-
-        // Sort by newest
-        activities.value = transactionActivities.reverse().slice(0, 10)
-
-    } catch (error) {
-        console.error('Failed to fetch activity', error)
-        // Fallback mock data if API fails
-        activities.value = [
-            { id: '1', time: '10:30 AM', patientName: 'Mock Patient', patientId: '1', action: 'Consultation Fee', status: 'COMPLETED', statusClass: 'bg-green-100 text-green-700' }
-        ]
-    } finally {
-        loading.value = false
-    }
-}
+const store = useActivityStore()
+const { activities, loading } = storeToRefs(store)
 
 onMounted(() => {
-    fetchActivity()
+    store.fetchActivities()
 })
 </script>
